@@ -1,0 +1,138 @@
+<html lang="ko" layout:decorate="~{layout}">
+<div layout:fragment="content">
+
+    <div class="flex">
+        <div class="bg-indigo-300 w-[20%] h-[750px] text-center ">
+            <ul class="menu h-[100%] overflow-scroll">
+                <li th:replace="~{layout::noteTree(${notebookList}, ${targetNotebook})}"></li>
+            </ul>
+            <label for="my_modal_6" class="btn btn-info">노트북 이름 변경</label>
+            <!-- Put this part before </body> tag -->
+            <input type="checkbox" id="my_modal_6" class="modal-toggle" />
+            <div class="modal" role="dialog">
+                <div class="modal-box flex flex-col items-center">
+                    <form th:action="@{|/books/${targetNotebook.id}/update|}" class="flex">
+                        <input type="hidden" name="targetNoteId" th:value="${targetNote.id}">
+                        <input type="text" name="name" class="border-2" th:value="${targetNotebook.name}">
+                        <input type="submit" class="btn" value="update">
+                    </form>
+                    <div class="modal-action flex justify-center">
+                        <label for="my_modal_6" class="btn">Close</label>
+                    </div>
+                </div>
+            </div>
+            <button class="btn" onclick="my_modal_1.showModal()">노트북 이동</button>
+            <dialog id="my_modal_1" class="modal">
+                <div class="modal-box">
+                    <form th:action="@{|/books/${targetNotebook.id}/move|}" method="post">
+                        <div>
+                            <ul class="menu h-[100%] overflow-scroll">
+                                <li th:replace="~{layout::moveTree(${notebookList}, ${targetNotebook})}"></li>
+                            </ul>
+                        </div>
+                        <div class="flex justify-end">
+                            <input type="hidden" name="targetNoteId" th:value="${targetNote.id}">
+                            <input type="submit" value="이동" class="btn">
+                        </div>
+                    </form>
+                    <div class="modal-action">
+                        <form method="dialog">
+                            <!-- if there is a button in form, it will close the modal -->
+                            <button class="btn">Close</button>
+                        </form>
+                    </div>
+                </div>
+            </dialog>
+            <form th:action="@{|/books/${targetNotebook.id}/delete|}" id="notebookDeleteForm" method="post">
+                <input class="btn btn-error" type="submit" value="노트북 삭제" onclick="notebookDeleteForm()">
+            </form>
+            <div class="flex justify-center">
+                <form action="/books/write" method="post">
+                    <input class="btn btn-success" type="submit" value="노트북 추가">
+                </form>
+
+                <form th:action="@{|/groups/books/${targetNotebook.id}/write|}" method="post">
+                    <input class="btn btn-warning" type="submit" value="하위 노트북 추가">
+                </form>
+            </div>
+        </div>
+
+        <div class="bg-red-300 w-[20%] h-[750px] text-center ">
+            <ul class="menu h-[100%] overflow-scroll">
+                <li th:each="note : ${noteList}"
+                    th:class="${note.id == targetNote.id} ? 'bg-blue-600' : ''">
+                    <a th:href="@{|/books/${targetNotebook.id}/notes/${note.id}|}" th:text="${note.title}"></a>
+                </li>
+            </ul>
+
+            <form th:action="@{|/books/${targetNotebook.id}/notes/write|}" method="post">
+                <input class="btn btn-success" type="submit" value="노트 추가">
+            </form>
+            <div class="flex flex-row justify-center">
+                <form th:action="@{|/books/${targetNotebook.id}/notes/createDate/desc|}">
+                    <input type="hidden" name="noteId" th:value="${targetNote.id}">
+                    <input type="submit" class="btn" value="날짜순 정렬">
+                </form>
+                <form th:action="@{|/books/${targetNotebook.id}/notes/title/asc|}">
+                    <input type="hidden" name="noteId" th:value="${targetNote.id}">
+                    <input type="submit" class="btn" value="이름순 정렬">
+                </form>
+            </div>
+        </div>
+
+        <div class="w-[60%]">
+            <form th:action="@{|/books/${targetNotebook.id}/notes/${targetNote.id}/update|}" method="post" id="updateForm">
+                <div>
+                    <input type="hidden" name="id" th:value="${targetNote.id}">
+                </div>
+                <div>
+                    <input class="input input-bordered input-lg w-full max-w-xs" type="text" name="title" th:value="${targetNote.title}">
+                </div>
+                <div id="editor"> <!-- 에디터 컨테이너 --></div>
+                <input type="hidden" name="content" id="editor-body" th:value="${targetNote.content}"> <!-- 에디터 내용 저장용 히든 필드 -->
+                <div>
+                    <input class="btn btn-info" type="button" value="수정" onclick="updateForm()">
+                </div>
+            </form>
+            <form th:action="@{|/books/${targetNotebook.id}/notes/${targetNote.id}/delete|}" method="post" id="deleteForm">
+                <input class="btn btn-error" type="button" value="삭제" onclick="deleteForm()">
+            </form>
+        </div>
+    </div>
+</div>
+<script layout:fragment="script">
+
+    // Toast UI Editor 초기화
+
+    const editor = new toastui.Editor({
+        el: document.getElementById("editor"), // 에디터가 표시될 컨테이너
+        previewStyle: "vertical",
+        height: "700px",
+        initialEditType: "wysiwyg",
+        initialValue: document.getElementById("editor-body").value, // 초기 콘텐츠
+    });
+
+        function updateForm() {
+            const form = document.getElementById("updateForm");
+            const editorBody = document.getElementById("editor-body");
+            editorBody.value = editor.getMarkdown(); // 에디터의 내용을 히든 필드에 설정
+            if (confirm("수정하시겠습니까?")) {
+                form.submit(); // 폼 제출
+            }
+        }
+
+        function deleteForm() {
+            const form = document.getElementById("deleteForm");
+            if(confirm("삭제하시겠습니까?")) {
+                form.submit();
+             }
+        }
+        function notebookDeleteForm() {
+            const form = document.getElementById("notebookDeleteForm");
+            if(confirm("노트북을 삭제하면 하위 노트북과 노트가 삭제됩니다. 삭제하시겠습니까?")) {
+                form.submit();
+            }
+        }
+
+</script>
+</html>
