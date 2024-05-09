@@ -1,5 +1,9 @@
 <html lang="ko" layout:decorate="~{layout}">
-<div layout:fragment="content">
+<div layout:fragment="content"
+     th:with="notebookList=${mainDataDto.notebookList},
+             targetNotebook=${mainDataDto.targetNotebook},
+             noteList=${mainDataDto.noteList},
+             targetNote=${mainDataDto.targetNote}">
 
     <div class="flex">
         <div class="bg-indigo-300 w-[20%] h-[750px] text-center ">
