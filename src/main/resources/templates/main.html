@@ -1,9 +1,5 @@
 <html lang="ko" layout:decorate="~{layout}">
-<div layout:fragment="content"
-     th:with="notebookList=${mainDataDto.notebookList},
-             targetNotebook=${mainDataDto.targetNotebook},
-             noteList=${mainDataDto.noteList},
-             targetNote=${mainDataDto.targetNote}">
+<div layout:fragment="content">
 
     <div class="flex">
         <div class="bg-indigo-300 w-[20%] h-[750px] text-center ">
@@ -72,16 +68,6 @@
             <form th:action="@{|/books/${targetNotebook.id}/notes/write|}" method="post">
                 <input class="btn btn-success" type="submit" value="노트 추가">
             </form>
-            <div class="flex flex-row justify-center">
-                <form th:action="@{|/books/${targetNotebook.id}/notes/createDate/desc|}">
-                    <input type="hidden" name="noteId" th:value="${targetNote.id}">
-                    <input type="submit" class="btn" value="날짜순 정렬">
-                </form>
-                <form th:action="@{|/books/${targetNotebook.id}/notes/title/asc|}">
-                    <input type="hidden" name="noteId" th:value="${targetNote.id}">
-                    <input type="submit" class="btn" value="이름순 정렬">
-                </form>
-            </div>
         </div>
 
         <div class="w-[60%]">

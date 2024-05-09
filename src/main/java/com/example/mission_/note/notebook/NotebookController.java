@@ -67,6 +67,10 @@ public class NotebookController {
     @PostMapping("/books/{id}/move")
     public String move (@PathVariable Long id, Long destinationId, Long targetNoteId) {
 
+        if (destinationId == null) {
+            return "redirect:/books/%d/notes/%d".formatted(id,targetNoteId);
+        }
+
         Notebook notebook = this.notebookService.getNotebook(id);
         this.notebookService.move(notebook, destinationId);
 
