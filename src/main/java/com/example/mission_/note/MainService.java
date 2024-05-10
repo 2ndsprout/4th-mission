@@ -55,6 +55,7 @@ public class MainService {
         Note targetNote = this.noteService.getNote(noteId);
 
         mainDataDto.setTargetNotebook(targetNotebook);
+        mainDataDto.setNoteList(targetNotebook.getNoteList());
         mainDataDto.setTargetNote(targetNote);
 
         return mainDataDto;
