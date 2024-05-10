@@ -11,8 +11,8 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @AllArgsConstructor
-@NoArgsConstructor
 @Entity
+@NoArgsConstructor
 public class SiteUser {
 
     @Id
@@ -24,10 +24,12 @@ public class SiteUser {
 
     private String password;
 
+    @Column(unique = true)
     private String nickname;
+
+    private LocalDateTime createDate;
 
     @Column(unique = true)
     private String email;
 
-    private LocalDateTime createDate;
 }

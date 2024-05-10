@@ -14,71 +14,51 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MainService {
 
-    private final NoteService noteService;
     private final NotebookService notebookService;
+    private final NoteService noteService;
 
     public Notebook getNotebook (Long notebookId) {
+
         return this.notebookService.getNotebook(notebookId);
+
     }
 
-    public void notebookSetNote (Notebook notebook) {
+    public Notebook addToNote (Notebook notebook) {
 
         Note note = this.noteService.saveDefault();
         notebook.addNote(note);
-        this.notebookService.save(notebook);
-    }
-
-    public List<Notebook> getNotebookList () {
-        return this.notebookService.getList();
-    }
-    public List<Notebook> getTopNotebookList () {
-        return this.notebookService.getTopNotebookList();
+        return this.notebookService.save(notebook);
     }
 
     public MainDataDto getDefaultMainData () {
 
-        List<Notebook> notebookList = this.getNotebookList();
-
+        List<Notebook> notebookList = this.notebookService.getTopNotebookList();
         if (notebookList.isEmpty()) {
 
             Notebook notebook = this.notebookService.saveDefault();
-            this.notebookSetNote(notebook);
-        }
 
-        List<Notebook> topNotebookList = this.getTopNotebookList();
+            this.addToNote(notebook);
+        }
         Notebook targetNotebook = notebookList.getLast();
         List<Note> noteList = targetNotebook.getNoteList();
         Note targetNote = noteList.getLast();
 
+        return new MainDataDto(notebookList,targetNotebook, noteList, targetNote);
 
-        return new MainDataDto(topNotebookList, targetNotebook, noteList, targetNote);
     }
 
     public MainDataDto getMainData (Long notebookId, Long noteId) {
 
         MainDataDto mainDataDto = this.getDefaultMainData();
 
-        Notebook targetNotebook = this.getNotebook(notebookId);
-        List<Note> noteList = targetNotebook.getNoteList();
+        Notebook targetNotebook = this.notebookService.getNotebook(notebookId);
         Note targetNote = this.noteService.getNote(noteId);
 
         mainDataDto.setTargetNotebook(targetNotebook);
-        mainDataDto.setNoteList(noteList);
         mainDataDto.setTargetNote(targetNote);
 
         return mainDataDto;
-
     }
 
-
-    public Notebook addToChild (Notebook parent) {
-
-        Notebook child = this.notebookService.saveDefault();
-        this.notebookSetNote(child);
-
-        parent.addChild(child);
-        return this.notebookService.save(parent);
-
-    }
 
 }

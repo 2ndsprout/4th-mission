@@ -29,7 +29,7 @@ public class UserController {
             bindingResult.rejectValue("password2", "passwordInCorrect", "비밀번호가 일치하지 않습니다.");
         }
         try {
-            this.userService.createUser(userCreateForm.getUsername(),userCreateForm.getPassword1(),userCreateForm.getNickname(),userCreateForm.getEmail());
+            this.userService.create(userCreateForm.getUsername(),userCreateForm.getPassword1(),userCreateForm.getNickname(),userCreateForm.getEmail());
         }
         catch (DataIntegrityViolationException e) {
             e.printStackTrace();

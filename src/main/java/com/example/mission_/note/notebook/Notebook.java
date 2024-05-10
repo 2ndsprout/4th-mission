@@ -26,7 +26,7 @@ public class Notebook {
     @OneToMany(mappedBy = "notebook",cascade = CascadeType.REMOVE)
     private List<Note> noteList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "parent", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "parent",cascade = CascadeType.REMOVE)
     private List<Notebook> children = new ArrayList<>();
 
     public void addNote (Note note) {

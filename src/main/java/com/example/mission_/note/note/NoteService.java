@@ -13,7 +13,6 @@ public class NoteService {
 
     private final NoteRepository noteRepository;
 
-
     public Note saveDefault () {
 
         Note note = new Note();
@@ -49,15 +48,5 @@ public class NoteService {
     }
     public void delete (Note note) {
         this.noteRepository.delete(note);
-    }
-
-    public List<Note> getCreateDateDesc(Long notebookId) {
-
-        return this.noteRepository.findByNotebookIdOrderByCreateDateDesc(notebookId);
-    }
-
-    public List<Note> getTitleAsc (Long notebookId) {
-
-        return this.noteRepository.findByNotebookIdOrderByTitleAsc(notebookId);
     }
 }

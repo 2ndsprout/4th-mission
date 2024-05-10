@@ -9,20 +9,19 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import java.util.List;
-
 @Controller
 @RequiredArgsConstructor
 public class NotebookController {
 
-    private final MainService mainService;
     private final NotebookService notebookService;
+    private final MainService mainService;
+
 
     @PostMapping("/books/write")
     public String write () {
 
         Notebook notebook = this.notebookService.saveDefault();
-        this.mainService.notebookSetNote(notebook);
+        this.mainService.addToNote(notebook);
 
         return "redirect:/";
     }
@@ -32,9 +31,13 @@ public class NotebookController {
 
         Notebook parent = this.notebookService.getNotebook(notebookId);
 
-        this.mainService.addToChild(parent);
+        Notebook child = this.notebookService.saveDefault();
+        this.mainService.addToNote(child);
 
-        return "redirect:/books/%d".formatted(parent.getChildren().getLast().getId());
+        parent.addChild(child);
+        this.notebookService.save(parent);
+
+        return "redirect:/books/%d".formatted(child.getId());
     }
 
     @GetMapping("/books/{id}")
@@ -42,31 +45,23 @@ public class NotebookController {
 
         Notebook notebook = this.notebookService.getNotebook(id);
         if (notebook.getNoteList().isEmpty()) {
-            this.mainService.notebookSetNote(notebook);
+            this.mainService.addToNote(notebook);
         }
         Long noteId = notebook.getNoteList().getLast().getId();
 
         return "redirect:/books/%d/notes/%d".formatted(id, noteId);
     }
-
-    @GetMapping("/books/{id}/update")
-    public String update (@PathVariable Long id, Long targetNoteId, String name) {
-
+    @PostMapping("/books/{id}/update")
+    public String update (@PathVariable Long id, Long noteId, String name) {
         Notebook notebook = this.notebookService.getNotebook(id);
         this.notebookService.update(notebook, name);
 
-        return "redirect:/books/%d/notes/%d".formatted(id,targetNoteId);
+        return "redirect:/books/%d/notes/%d".formatted(id,noteId);
     }
-
     @PostMapping("/books/{id}/delete")
     public String delete (@PathVariable Long id) {
-
-        List<Notebook> notebookList = this.notebookService.getList();
-        if (notebookList.size()==1) {
-            return "redirect:/";
-        }
-
         Notebook notebook = this.notebookService.getNotebook(id);
+
         this.notebookService.delete(notebook);
 
         return "redirect:/";
@@ -74,7 +69,7 @@ public class NotebookController {
     @PostMapping("/books/{id}/move")
     public String move (@PathVariable Long id, Long destinationId, Long targetNoteId) {
 
-        if (destinationId == null) {
+        if (destinationId==null){
             return "redirect:/books/%d/notes/%d".formatted(id,targetNoteId);
         }
 

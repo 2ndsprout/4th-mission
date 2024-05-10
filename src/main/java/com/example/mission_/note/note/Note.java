@@ -1,5 +1,6 @@
 package com.example.mission_.note.note;
 
+
 import com.example.mission_.note.notebook.Notebook;
 import jakarta.persistence.*;
 import lombok.Getter;

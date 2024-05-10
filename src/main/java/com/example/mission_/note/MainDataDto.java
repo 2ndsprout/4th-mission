@@ -1,12 +1,12 @@
 package com.example.mission_.note;
 
+
 import com.example.mission_.note.note.Note;
 import com.example.mission_.note.notebook.Notebook;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -14,12 +14,11 @@ import java.util.List;
 @AllArgsConstructor
 public class MainDataDto {
 
-    List<Notebook> notebookList = new ArrayList<>();
+    List<Notebook> notebookList;
 
     Notebook targetNotebook;
 
     List<Note> noteList;
 
     Note targetNote;
-
 }

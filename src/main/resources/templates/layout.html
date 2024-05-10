@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <title>MISSION</title>
@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
 </head>
 <body>
+
 
 <li th:fragment="noteTree(notebookList, targetNotebook)" th:each="notebook : ${notebookList}"
     th:with="basic='w-[90%] p-[10px]'">
@@ -22,7 +23,7 @@
                 </a>
             </summary>
             <ul>
-                <li th:replace="layout::noteTree(${notebook.children}, ${targetNotebook})"></li>
+                <li th:replace="~{layout::noteTree(${notebook.children}, ${targetNotebook})}"></li>
             </ul>
         </details>
     </th:block>
@@ -40,22 +41,22 @@
     <th:block th:if="${!#lists.isEmpty(notebook.children)}">
         <details open th:if="${notebook.id != targetNotebook.id and !#lists.contains(targetNotebook.children, notebook)}">
             <summary class="flex p-0">
-                <input type="radio" name="destinationId" class="radio radio-primary" th:value="${notebook.id}">
-                <a href="javascript:void(0)"
+                <input type="radio" name="destinationId" th:value="${notebook.id}" class="radio radio-primary">
+                <a href="java:script(0)"
                    th:class="${basic}"
                    th:text="${notebook.name}"
                    th:classappend="${notebook.id == targetNotebook.id} ? 'bg-blue-600' : ''">
                 </a>
             </summary>
             <ul>
-                <li th:replace="layout::moveTree(${notebook.children}, ${targetNotebook})"></li>
+                <li th:replace="~{layout::moveTree(${notebook.children}, ${targetNotebook})}"></li>
             </ul>
         </details>
     </th:block>
     <th:block th:if="${#lists.isEmpty(notebook.children)}">
-        <div th:if="${notebook.id != targetNotebook.id and !#lists.contains(targetNotebook.children, notebook)}" class="flex">
-            <input type="radio" name="destinationId" class="radio radio-primary" th:value="${notebook.id}">
-            <a href="javascript:void(0)"
+        <div th:if="${notebook.id != targetNotebook.id and !#lists.contains(targetNotebook.children, notebook)}">
+            <input type="radio" name="destinationId" th:value="${notebook.id}" class="radio radio-primary">
+            <a href="java:script(0)"
                th:class="${basic}"
                th:text="${notebook.name}"
                th:classappend="${notebook.id == targetNotebook.id} ? 'bg-blue-600' : ''">
@@ -64,7 +65,7 @@
     </th:block>
 </li>
 
-<nav th:replace="~{navbar::navbarFragment}"></nav>
+<nav th:replace="~{navbar::navFragment}"></nav>
 
 <th:block layout:fragment="content"></th:block>
 

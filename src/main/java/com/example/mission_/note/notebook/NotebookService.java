@@ -33,27 +33,27 @@ public class NotebookService {
     public Notebook save (Notebook notebook) {
         return this.notebookRepository.save(notebook);
     }
-    public void update (Notebook notebook, String name) {
 
+    public Notebook update (Notebook notebook, String name) {
         if (name.trim().isEmpty()) {
-            name = "새 노트북";
+            name="새 노트북";
         }
         notebook.setName(name);
-        this.save(notebook);
-    }
-    public List<Notebook> getTopNotebookList () {
-        return this.notebookRepository.findByParentIsNull();
+        return this.notebookRepository.save(notebook);
     }
 
     public void delete (Notebook notebook) {
         this.notebookRepository.delete(notebook);
     }
 
-    public Notebook move (Notebook notebook, Long destinationId) {
+    public void move (Notebook notebook, Long destinationId) {
 
-        Notebook destination = getNotebook(destinationId);
+        Notebook destination = this.getNotebook(destinationId);
         notebook.setParent(destination);
-        return this.save(notebook);
 
+        this.save(notebook);
+    }
+    public List<Notebook> getTopNotebookList () {
+        return this.notebookRepository.findByParentIsNull();
     }
 }
