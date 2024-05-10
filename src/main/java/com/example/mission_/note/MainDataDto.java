@@ -18,7 +18,7 @@ public class MainDataDto {
 
     Notebook targetNotebook;
 
-    List<Note> noteList = new ArrayList<>();
+    List<Note> noteList;
 
     Note targetNote;
 

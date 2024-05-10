@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.util.List;
+
 @Controller
 @RequiredArgsConstructor
 public class NotebookController {
@@ -58,6 +60,11 @@ public class NotebookController {
 
     @PostMapping("/books/{id}/delete")
     public String delete (@PathVariable Long id) {
+
+        List<Notebook> notebookList = this.notebookService.getList();
+        if (notebookList.size()==1) {
+            return "redirect:/";
+        }
 
         Notebook notebook = this.notebookService.getNotebook(id);
         this.notebookService.delete(notebook);
