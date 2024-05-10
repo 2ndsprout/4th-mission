@@ -64,18 +64,11 @@
     </th:block>
 </li>
 
-<div th:with="notebookList=${mainDataDto.notebookList},
-             targetNotebook=${mainDataDto.targetNotebook},
-             noteList=${mainDataDto.noteList},
-             targetNote=${mainDataDto.targetNote}">
-
 <nav th:replace="~{navbar::navbarFragment}"></nav>
 
 <th:block layout:fragment="content"></th:block>
 
 <th:block layout:fragment="script"></th:block>
-
-</div>
 
 </body>
 </html>
