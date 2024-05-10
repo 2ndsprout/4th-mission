@@ -27,7 +27,7 @@ public class NotebookService {
     public Notebook saveDefault () {
         Notebook notebook = new Notebook();
 
-        notebook.setName("새노트");
+        notebook.setName("새노트북");
         return this.notebookRepository.save(notebook);
     }
     public Notebook save (Notebook notebook) {
@@ -36,7 +36,7 @@ public class NotebookService {
 
     public Notebook update (Notebook notebook, String name) {
         if (name.trim().isEmpty()) {
-            name="새 노트북";
+            name="새노트북";
         }
         notebook.setName(name);
         return this.notebookRepository.save(notebook);

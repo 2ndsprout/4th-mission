@@ -3,7 +3,7 @@ package com.example.mission_.note;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.NoSuchElementException;
 
@@ -14,7 +14,7 @@ public class MainController {
     private final MainService mainService;
 
 
-    @RequestMapping("/")
+    @GetMapping("/")
     public String main(Model model) {
 
         try {
