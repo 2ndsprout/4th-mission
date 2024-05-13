@@ -15,7 +15,7 @@
     <th:block th:if="${!#lists.isEmpty(notebook.children)}">
         <details open>
             <summary class="flex p-0">
-                <a th:href="@{|/books/${notebook.id}?keyword=${keyword}|}"
+                <a th:href="@{|/books/${notebook.id}?keyword=${keyword}&isSearchModal=${isSearchModal}&sort=${sort}|}"
                    th:class="${basic}"
                    th:text="${notebook.name}"
                    th:classappend="${notebook.id == targetNotebook.id} ? 'bg-blue-600' : ''">
@@ -27,7 +27,7 @@
         </details>
     </th:block>
     <th:block th:if="${#lists.isEmpty(notebook.children)}">
-        <a th:href="@{|/books/${notebook.id}?keyword=${keyword}|}"
+        <a th:href="@{|/books/${notebook.id}?keyword=${keyword}&isSearchModal=${isSearchModal}&sort=${sort}|}"
            th:class="${basic}"
            th:text="${notebook.name}"
            th:classappend="${notebook.id == targetNotebook.id} ? 'bg-blue-600' : ''">
