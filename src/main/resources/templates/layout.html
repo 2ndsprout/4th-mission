@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>MISSION</title>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.10.2/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
+    <script src="https://kit.fontawesome.com/af71419a16.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
+</head>
+
+<li th:fragment="noteTree(notebookList, targetNotebook)" th:each="notebook : ${notebookList}"
+    th:with="basic='w-[90%] p-[10px]'">
+    <th:block th:if="${!#lists.isEmpty(notebook.children)}">
+        <details open>
+            <summary class="flex p-0">
+                <a th:href="@{|/books/${notebook.id}?keyword=${keyword}|}"
+                   th:class="${basic}"
+                   th:text="${notebook.name}"
+                   th:classappend="${notebook.id == targetNotebook.id} ? 'bg-blue-600' : ''">
+                </a>
+            </summary>
+            <ul>
+                <li th:replace="~{layout::noteTree(${notebook.children}, ${targetNotebook})}"></li>
+            </ul>
+        </details>
+    </th:block>
+    <th:block th:if="${#lists.isEmpty(notebook.children)}">
+        <a th:href="@{|/books/${notebook.id}?keyword=${keyword}|}"
+           th:class="${basic}"
+           th:text="${notebook.name}"
+           th:classappend="${notebook.id == targetNotebook.id} ? 'bg-blue-600' : ''">
+        </a>
+    </th:block>
+</li>
+
+<li th:fragment="moveTree(notebookList, targetNotebook)" th:each="notebook : ${notebookList}"
+    th:with="basic='w-[90%] p-[10px]'">
+    <th:block th:if="${!#lists.isEmpty(notebook.children)}">
+        <details open th:if="${notebook.id != targetNotebook.id and !#lists.contains(targetNotebook.children, notebook)}">
+            <summary class="flex p-0">
+                <input type="radio" name="destinationId" th:value="${notebook.id}" class="radio radio-primary">
+                <a href="java:script(0)"
+                   th:class="${basic}"
+                   th:text="${notebook.name}"
+                   th:classappend="${notebook.id == targetNotebook.id} ? 'bg-blue-600' : ''">
+                </a>
+            </summary>
+            <ul>
+                <li th:replace="~{layout::moveTree(${notebook.children}, ${targetNotebook})}"></li>
+            </ul>
+        </details>
+    </th:block>
+    <th:block th:if="${#lists.isEmpty(notebook.children)}">
+        <div th:if="${notebook.id != targetNotebook.id and !#lists.contains(targetNotebook.children, notebook)}">
+            <input type="radio" name="destinationId" th:value="${notebook.id}" class="radio radio-primary">
+            <a href="java:script(0)"
+               th:class="${basic}"
+               th:text="${notebook.name}"
+               th:classappend="${notebook.id == targetNotebook.id} ? 'bg-blue-600' : ''">
+            </a>
+        </div>
+    </th:block>
+</li>
+
+
+<body>
+
+<th:block layout:fragment="content"></th:block>
+
+<th:block layout:fragment="script"></th:block>
+
+</body>
+</html>
