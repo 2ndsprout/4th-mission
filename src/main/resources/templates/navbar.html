@@ -19,6 +19,22 @@
             <a class="btn btn-ghost text-xl" href="/">logo</a>
         </div>
         <div class="navbar-end">
+            <button class="btn btn-outline text-white" onclick="searchModal.showModal()">노트북 검색</button>
+            <dialog id="searchModal" class="modal">
+                <div class="modal-box">
+                    <div>
+                        <form action="/">
+                            <input type="text" name="keyword" class="input input-bordered">
+                            <input type="submit" value="검색" class="btn btn-outline">
+                        </form>
+                    </div>
+                    <div class="modal-action">
+                        <form method="dialog">
+                            <button class="btn btn-outline">Close</button>
+                        </form>
+                    </div>
+                </div>
+            </dialog>
         </div>
     </div>
 </nav>
