@@ -24,7 +24,7 @@
                 <div class="modal-box h-[600px]">
                     <div class="h-[15%]">
                         <form action="/" class="flex justify-center gap-5">
-                            <input type="text" name="keyword" class="input input-bordered">
+                            <input type="text" name="keyword" class="input input-bordered" th:value="${keyword}">
                             <input type="hidden" name="isSearchModal" value="true">
                             <input type="submit" value="검색" class="btn btn-outline">
                         </form>
@@ -33,11 +33,11 @@
                         th:with="itemHover = 'hover:bg-blue-600 p-[10px] flex hover:text-white', itemAnchor = 'inline-block w-[100%]'">
                         <li th:class="${itemHover}" th:each="notebook : ${searchedNotebookList}">
                             <i class="fa-solid fa-book p-[5px]"></i>
-                            <a href="#" th:text="${notebook.name}" th:class="${itemAnchor}"></a>
+                            <a th:href="@{|/books/${notebook.id}|}" th:text="${notebook.name}" th:class="${itemAnchor}"></a>
                         </li>
                         <li th:class="${itemHover}" th:each="note : ${searchedNoteList}">
                             <i class="fa-regular fa-note-sticky p-[5px]"></i>
-                            <a href="#" th:text="${note.title}" th:class="${itemAnchor}"></a>
+                            <a th:href="@{|/books/${note.notebook.id}/notes/${note.id}|}" th:text="${note.title}" th:class="${itemAnchor}"></a>
                         </li>
                     </ul>
                     <div class="modal-action h-[10%]">
