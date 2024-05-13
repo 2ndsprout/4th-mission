@@ -6,10 +6,9 @@
     <link href="https://cdn.jsdelivr.net/npm/daisyui@4.10.2/dist/full.min.css" rel="stylesheet" type="text/css" />
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
+    <script src="https://kit.fontawesome.com/af71419a16.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
 </head>
-<body>
-
 
 <li th:fragment="noteTree(notebookList, targetNotebook)" th:each="notebook : ${notebookList}"
     th:with="basic='w-[90%] p-[10px]'">
@@ -65,7 +64,8 @@
     </th:block>
 </li>
 
-<nav th:replace="~{navbar::navFragment}"></nav>
+
+<body>
 
 <th:block layout:fragment="content"></th:block>
 

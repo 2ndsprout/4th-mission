@@ -7,10 +7,10 @@
                 </div>
                 <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52 text-black">
                     <li>
-                        <a href="/user/logout">logout</a>
+                        <a href="/user/logout" class="inline-block w-[100%]">logout</a>
                     </li>
                     <li>
-                        <a href="/user/signup">signup</a>
+                        <a href="/user/signup" class="inline-block w-[100%]">signup</a>
                     </li>
                 </ul>
             </div>
@@ -20,15 +20,27 @@
         </div>
         <div class="navbar-end">
             <button class="btn btn-outline text-white" onclick="searchModal.showModal()">노트북 검색</button>
-            <dialog id="searchModal" class="modal">
-                <div class="modal-box">
-                    <div>
-                        <form action="/">
+            <dialog id="searchModal" class="modal text-black">
+                <div class="modal-box h-[600px]">
+                    <div class="h-[15%]">
+                        <form action="/" class="flex justify-center gap-5">
                             <input type="text" name="keyword" class="input input-bordered">
+                            <input type="hidden" name="isSearchModal" value="true">
                             <input type="submit" value="검색" class="btn btn-outline">
                         </form>
                     </div>
-                    <div class="modal-action">
+                    <ul class="h-[70%] border-2 overflow-auto"
+                        th:with="itemHover = 'hover:bg-blue-600 p-[10px] flex hover:text-white', itemAnchor = 'inline-block w-[100%]'">
+                        <li th:class="${itemHover}" th:each="notebook : ${searchedNotebookList}">
+                            <i class="fa-solid fa-book p-[5px]"></i>
+                            <a href="#" th:text="${notebook.name}" th:class="${itemAnchor}"></a>
+                        </li>
+                        <li th:class="${itemHover}" th:each="note : ${searchedNoteList}">
+                            <i class="fa-regular fa-note-sticky p-[5px]"></i>
+                            <a href="#" th:text="${note.title}" th:class="${itemAnchor}"></a>
+                        </li>
+                    </ul>
+                    <div class="modal-action h-[10%]">
                         <form method="dialog">
                             <button class="btn btn-outline">Close</button>
                         </form>

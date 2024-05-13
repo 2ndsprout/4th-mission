@@ -15,11 +15,12 @@ public class MainController {
 
 
     @GetMapping("/")
-    public String main(Model model) {
+    public String main(String keyword, String isSearchModal, Model model) {
 
         try {
-            MainDataDto mainDataDto = this.mainService.getDefaultMainData();
+            MainDataDto mainDataDto = this.mainService.getDefaultMainData(keyword);
             model.addAttribute("mainDataDto", mainDataDto);
+            model.addAttribute("isSearchModal", isSearchModal);
         }
         catch (NoSuchElementException e) {
          e.printStackTrace();

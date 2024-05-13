@@ -1,5 +1,6 @@
 <html layout:decorate="~{layout}">
 <div layout:fragment="content">
+    <nav th:replace="~{navbar::navFragment}"></nav>
     <div class="mx-auto w-[800px] flex flex-col justify-center text-center m-10">
         <form th:action="@{|/user/login|}" method="post">
             <div th:if="${param.error}">

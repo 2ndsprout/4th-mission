@@ -3,7 +3,12 @@
      th:with="notebookList=${mainDataDto.notebookList},
      targetNotebook=${mainDataDto.targetNotebook},
      noteList=${mainDataDto.noteList},
-     targetNote=${mainDataDto.targetNote}">
+     targetNote=${mainDataDto.targetNote},
+     searchedNotebookList=${mainDataDto.searchedNotebookList},
+     searchedNoteList=${mainDataDto.searchedNoteList}">
+
+    <input type="hidden" id="isSearchModal" th:value="${isSearchModal}">
+    <nav th:replace="~{navbar::navFragment}"></nav>
 
     <div class="flex">
         <div class="bg-indigo-300 w-[20%] h-[750px] text-center ">
@@ -132,5 +137,9 @@
         }
     }
 
+    const isSearchModal = document.querySelector("#isSearchModal").value;
+    if(JSON.parse(isSearchModal)) {
+        searchModal.showModal();
+    }
 </script>
 </html>

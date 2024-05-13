@@ -21,4 +21,8 @@ public class MainDataDto {
     List<Note> noteList;
 
     Note targetNote;
+
+    List<Notebook> searchedNotebookList;
+
+    List<Note> searchedNoteList;
 }

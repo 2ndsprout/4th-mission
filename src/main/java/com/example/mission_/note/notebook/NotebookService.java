@@ -56,4 +56,8 @@ public class NotebookService {
     public List<Notebook> getTopNotebookList () {
         return this.notebookRepository.findByParentIsNull();
     }
+
+    public List<Notebook> getSearchedNotebookList(String keyword) {
+        return this.notebookRepository.findByNameContaining(keyword);
+    }
 }

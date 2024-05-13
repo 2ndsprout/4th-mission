@@ -30,7 +30,7 @@ public class MainService {
         return this.notebookService.save(notebook);
     }
 
-    public MainDataDto getDefaultMainData () {
+    public MainDataDto getDefaultMainData (String keyword) {
 
         List<Notebook> notebookList = this.notebookService.getTopNotebookList();
         if (notebookList.isEmpty()) {
@@ -43,13 +43,16 @@ public class MainService {
         List<Note> noteList = targetNotebook.getNoteList();
         Note targetNote = noteList.getLast();
 
-        return new MainDataDto(notebookList,targetNotebook, noteList, targetNote);
+        List<Notebook> searchedNotebookList = this.notebookService.getSearchedNotebookList(keyword);
+        List<Note> searchedNoteList = this.noteService.getSearchedNoteList(keyword);
+
+        return new MainDataDto(notebookList,targetNotebook, noteList, targetNote, searchedNotebookList, searchedNoteList);
 
     }
 
-    public MainDataDto getMainData (Long notebookId, Long noteId) {
+    public MainDataDto getMainData (Long notebookId, Long noteId, String keyword) {
 
-        MainDataDto mainDataDto = this.getDefaultMainData();
+        MainDataDto mainDataDto = this.getDefaultMainData(keyword);
 
         Notebook targetNotebook = this.notebookService.getNotebook(notebookId);
         Note targetNote = this.noteService.getNote(noteId);
