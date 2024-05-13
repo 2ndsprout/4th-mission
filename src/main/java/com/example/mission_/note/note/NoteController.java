@@ -35,7 +35,7 @@ public class NoteController {
                          @PathVariable Long id,
                          ParamHandler paramHandler, Model model) {
 
-        MainDataDto mainDataDto = this.mainService.getMainData(notebookId, id, paramHandler.getKeyword());
+        MainDataDto mainDataDto = this.mainService.getMainData(notebookId, id, paramHandler.getKeyword(), paramHandler.getSort());
 
         model.addAttribute("mainDataDto", mainDataDto);
 

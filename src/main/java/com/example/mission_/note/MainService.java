@@ -50,7 +50,7 @@ public class MainService {
 
     }
 
-    public MainDataDto getMainData (Long notebookId, Long noteId, String keyword) {
+    public MainDataDto getMainData (Long notebookId, Long noteId, String keyword, String sort) {
 
         MainDataDto mainDataDto = this.getDefaultMainData(keyword);
 
@@ -58,8 +58,21 @@ public class MainService {
         Note targetNote = this.noteService.getNote(noteId);
 
         mainDataDto.setTargetNotebook(targetNotebook);
-        mainDataDto.setNoteList(targetNotebook.getNoteList());
+        // mainDataDto.setNoteList(targetNotebook.getNoteList());
         mainDataDto.setTargetNote(targetNote);
+
+        List<Note> sortedNoteList;
+
+        if (sort.equals("date")) {
+            sortedNoteList = this.noteService.getSortedListByCreateDate(targetNotebook);
+        }
+        else if (sort.equals("title")) {
+            sortedNoteList = this.noteService.getSortedNoteListByTitle(targetNotebook);
+        }
+        else {
+            sortedNoteList = targetNotebook.getNoteList();
+        }
+        mainDataDto.setNoteList(sortedNoteList);
 
         return mainDataDto;
     }

@@ -1,5 +1,6 @@
 package com.example.mission_.note.note;
 
+import com.example.mission_.note.notebook.Notebook;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -52,5 +53,15 @@ public class NoteService {
 
     public List<Note> getSearchedNoteList(String keyword) {
         return this.noteRepository.findByTitleContaining(keyword);
+    }
+
+    public List<Note> getSortedListByCreateDate(Notebook targetNotebook) {
+
+        return this.noteRepository.findByNotebookOrderByCreateDateDesc(targetNotebook);
+    }
+
+    public List<Note> getSortedNoteListByTitle(Notebook targetNotebook) {
+
+        return this.noteRepository.findByNotebookOrderByTitle(targetNotebook);
     }
 }

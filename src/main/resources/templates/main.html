@@ -7,7 +7,8 @@
      searchedNotebookList=${mainDataDto.searchedNotebookList},
      searchedNoteList=${mainDataDto.searchedNoteList},
      keyword=${paramHandler.keyword},
-     isSearchModal=${paramHandler.isSearchModal}">
+     isSearchModal=${paramHandler.isSearchModal},
+     sort=${paramHandler.sort}">
 
     <nav th:replace="~{navbar::navFragment}"></nav>
 
@@ -75,13 +76,15 @@
             <ul class="menu h-[100%] overflow-scroll">
                 <li th:each="note : ${noteList}"
                     th:class="${note.id == targetNote.id} ? 'bg-blue-600' : ''">
-                    <a th:href="@{|/books/${targetNotebook.id}/notes/${note.id}?keyword=${keyword}|}" th:text="${note.title}"></a>
+                    <a th:href="@{|/books/${targetNotebook.id}/notes/${note.id}?keyword=${keyword}&isSearchModal=${isSearchModal}|}" th:text="${note.title}"></a>
                 </li>
             </ul>
 
             <form th:action="@{|/books/${targetNotebook.id}/notes/write|}" method="post">
                 <input class="btn btn-success" type="submit" value="노트 추가">
             </form>
+            <a th:href="@{|/books/${targetNotebook.id}/notes/${targetNote.id}?keyword=${keyword}&isSearchModal=${isSearchModal}&sort=date|}" class="btn btn-outline">날짜순 정렬</a>
+            <a th:href="@{|/books/${targetNotebook.id}/notes/${targetNote.id}?keyword=${keyword}&isSearchModal=${isSearchModal}&sort=title|}" class="btn btn-outline">이름순 정렬</a>
         </div>
 
         <div class="w-[60%]">
