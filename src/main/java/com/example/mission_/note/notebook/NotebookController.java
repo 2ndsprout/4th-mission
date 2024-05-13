@@ -53,6 +53,7 @@ public class NotebookController {
         }
         Long noteId = notebook.getNoteList().getLast().getId();
 
+
         return "redirect:/books/%d/notes/%d?keyword=%s".formatted(id, noteId, URLEncoder.encode(paramHandler.getKeyword()));
     }
     @PostMapping("/books/{id}/update")

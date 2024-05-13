@@ -4,6 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+<<<<<<< HEAD
+=======
+import org.springframework.web.bind.annotation.RequestParam;
+>>>>>>> 36971aea290851b88cb2a9c89337b4ae8bb304e2
 
 import java.util.NoSuchElementException;
 
