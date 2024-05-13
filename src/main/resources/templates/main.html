@@ -31,9 +31,7 @@
                             </div>
                             <div class="flex justify-end">
                                 <input type="hidden" name="targetNoteId" th:value="${targetNote.id}">
-                                <input type="hidden" name="keyword" th:value="${keyword}">
-                                <input type="hidden" name="sort" th:value="${sort}">
-                                <input type="submit" value="이동" class="btn btn-outline">
+                                <input type="submit" value="이동" class="postActionBtn" classappend="btn btn-outline">
                             </div>
                         </form>
                         <div class="modal-action">
@@ -51,10 +49,8 @@
                     <div class="modal-box flex flex-col items-center">
                             <form th:action="@{|/books/${targetNotebook.id}/update|}" method="post">
                                 <input type="hidden" name="noteId" th:value="${targetNote.id}">
-                                <input type="hidden" name="keyword" th:value="${keyword}">
-                                <input type="hidden" name="sort" th:value="${sort}">
                                 <input class="input input-bordered flex items-center gap-2" type="text" name="name" th:value="${targetNotebook.name}">
-                                <input type="submit" class="btn" value="수정">
+                                <input type="submit" class="postActionBtn btn" value="수정">
                             </form>
                         <div class="modal-action">
                             <label for="my_modal_6" class="btn">Close</label>
@@ -63,21 +59,15 @@
                 </div>
 
                 <form th:action="@{|/books/${targetNotebook.id}/delete|}" method="post" id="deleteNotebookForm">
-                    <input type="hidden" name="keyword" th:value="${keyword}">
-                    <input type="hidden" name="sort" th:value="${sort}">
-                    <input class="btn btn-error" type="submit" value="노트북 삭제" onclick="deleteNotebookForm()">
+                    <input class="postActionBtn btn btn-error" type="submit" value="노트북 삭제" onclick="deleteNotebookForm()">
                 </form>
             </div>
             <div class="flex flex-row justify-center">
                 <form action="/books/write" method="post">
-                    <input type="hidden" name="keyword" th:value="${keyword}">
-                    <input type="hidden" name="sort" th:value="${sort}">
-                    <input class="btn btn-success" type="submit" value="노트북 추가">
+                    <input class="postActionBtn btn btn-success" type="submit" value="노트북 추가">
                 </form>
                 <form th:action="@{|/groups/books/${targetNotebook.id}/write|}" method="post">
-                    <input type="hidden" name="keyword" th:value="${keyword}">
-                    <input type="hidden" name="sort" th:value="${sort}">
-                    <input class="btn btn-warning" type="submit" value="하위 노트북 추가">
+                    <input class="postActionBtn btn btn-warning" type="submit" value="하위 노트북 추가">
                 </form>
             </div>
         </div>
@@ -91,9 +81,7 @@
             </ul>
 
             <form th:action="@{|/books/${targetNotebook.id}/notes/write|}" method="post">
-                <input type="hidden" name="keyword" th:value="${keyword}">
-                <input type="hidden" name="sort" th:value="${sort}">
-                <input class="btn btn-success" type="submit" value="노트 추가">
+                <input class="postActionBtn btn btn-success" type="submit" value="노트 추가">
             </form>
             <a th:href="@{|/books/${targetNotebook.id}/notes/${targetNote.id}?keyword=${keyword}&sort=date|}" class="btn btn-outline">날짜순 정렬</a>
             <a th:href="@{|/books/${targetNotebook.id}/notes/${targetNote.id}?keyword=${keyword}&sort=title|}" class="btn btn-outline">이름순 정렬</a>
@@ -103,8 +91,6 @@
             <form th:action="@{|/books/${targetNotebook.id}/notes/${targetNote.id}/update|}" method="post" id="updateForm">
                 <div>
                     <input type="hidden" name="id" th:value="${targetNote.id}">
-                    <input type="hidden" name="keyword" th:value="${keyword}">
-                    <input type="hidden" name="sort" th:value="${sort}">
                 </div>
                 <div>
                     <input class="input input-bordered input-lg w-full max-w-xs" type="text" name="title" th:value="${targetNote.title}">
@@ -116,19 +102,22 @@
             </form>
             <div class="flex flex-row justify-center">
                 <form th:action="@{|/books/${targetNotebook.id}/notes/${targetNote.id}/update|}" method="post" id="updateForm">
-                    <input type="hidden" name="keyword" th:value="${keyword}">
-                    <input type="hidden" name="sort" th:value="${sort}">
-                    <input class="btn btn-info w-[100px]" type="button" value="수정" onclick="updateForm()">
+                    <input class="postActionBtn btn btn-info w-[100px]" type="button" value="수정" onclick="updateForm()">
                 </form>
                 <form th:action="@{|/books/${targetNotebook.id}/notes/${targetNote.id}/delete|}" method="post" id="deleteNoteForm">
-                    <input type="hidden" name="keyword" th:value="${keyword}">
-                    <input type="hidden" name="sort" th:value="${sort}">
-                    <input class="btn btn-error w-[100px]" type="button" value="삭제" onclick="deleteNoteForm()">
+                    <input class="postActionBtn btn btn-error w-[100px]" type="button" value="삭제" onclick="deleteNoteForm()">
                 </form>
             </div>
         </div>
     </div>
 </div>
+
+<div id="params">
+    <input type="hidden" name="keyword" th:value="${keyword}">
+    <input type="hidden" name="isSearchModal" th:value="${isSearchModal}">
+    <input type="hidden" name="sort" th:value="${sort}">
+</div>
+
 <script layout:fragment="script">
 
     const editor = new toastui.Editor({
@@ -165,5 +154,39 @@
     if(JSON.parse(isSearchModal)) {
         searchModal.showModal();
     }
+
+    // Post 요청이 발생하면 id = params 에 있는 값을 가져와서 form 에 추가해서 보낸다.
+    function postAction(button) {
+        const form = button.form;
+        const params = getDefaultParam();
+
+        Object.entries(params).forEach(([key, value]) => {
+            const input = document.createElement("input");
+            input.setAttribute("type", "hidden");
+            input.setAttribute("name", "key");
+            input.setAttribute("value", "value");
+            form.appendChild(input);
+        });
+        form.submit();
+    }
+
+    document.querySelectorAll(".postActionBtn").forEach((btn) => {
+        btn.addEventListener("click", (e) => {
+            e.preventDefault();
+            postAction(btn);
+        });
+    });
+
+    function getDefaultParam() {
+        const paramInputList = document.querySelectorAll("#params input");
+
+        const params = {};
+        paramInputList.forEach((input) => {
+            params[input.name] = input.value;
+        });
+
+       return params;
+    }
+    getDefaultParam();
 </script>
 </html>

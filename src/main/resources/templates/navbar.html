@@ -34,11 +34,11 @@
                         th:with="itemHover = 'hover:bg-blue-600 p-[10px] flex hover:text-white', itemAnchor = 'inline-block w-[100%]'">
                         <li th:class="${itemHover}" th:each="notebook : ${searchedNotebookList}">
                             <i class="fa-solid fa-book p-[5px]"></i>
-                            <a th:href="@{|/books/${notebook.id}?keyword=${keyword}&isSearchModal=${isSearchModal}&sort=${sort}|}" th:text="${notebook.name}" th:class="${itemAnchor}"></a>
+                            <a th:href="@{|/books/${notebook.id}?keyword=${keyword}&sort=${sort}|}" th:text="${notebook.name}" th:class="${itemAnchor}"></a>
                         </li>
                         <li th:class="${itemHover}" th:each="note : ${searchedNoteList}">
                             <i class="fa-regular fa-note-sticky p-[5px]"></i>
-                            <a th:href="@{|/books/${note.notebook.id}/notes/${note.id}?keyword=${keyword}&isSearchModal=${isSearchModal}&sort=${sort}|}" th:text="${note.title}" th:class="${itemAnchor}"></a>
+                            <a th:href="@{|/books/${note.notebook.id}/notes/${note.id}?keyword=${keyword}&sort=${sort}|}" th:text="${note.title}" th:class="${itemAnchor}"></a>
                         </li>
                     </ul>
                     <div class="modal-action h-[10%]">
