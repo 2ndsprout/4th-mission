@@ -11,5 +11,8 @@ public class ParamHandler {
 
     private Boolean isSearchModal;
 
-
+    public ParamHandler () {
+        this.keyword = "";
+        this.isSearchModal = false;
+    }
 }
