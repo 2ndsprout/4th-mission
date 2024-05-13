@@ -63,15 +63,13 @@ public class MainService {
 
         List<Note> sortedNoteList;
 
-        if (sort.equals("date")) {
-            sortedNoteList = this.noteService.getSortedListByCreateDate(targetNotebook);
-        }
-        else if (sort.equals("title")) {
+        if (sort.equals("title")) {
             sortedNoteList = this.noteService.getSortedNoteListByTitle(targetNotebook);
         }
-        else {
-            sortedNoteList = targetNotebook.getNoteList();
+        else  {
+            sortedNoteList = this.noteService.getSortedListByCreateDate(targetNotebook);
         }
+        
         mainDataDto.setNoteList(sortedNoteList);
 
         return mainDataDto;

@@ -19,7 +19,7 @@ public class ParamHandler {
     public ParamHandler () {
         this.keyword = "";
         this.isSearchModal = false;
-        this.sort = "";
+        this.sort = "date";
     }
 
     public String getQueryParam () {
