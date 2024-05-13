@@ -22,12 +22,12 @@ public class NoteController {
     private final MainService mainService;
 
     @PostMapping("/write")
-    public String write(@PathVariable Long notebookId) {
+    public String write(@PathVariable Long notebookId, ParamHandler paramHandler) {
 
         Notebook notebook = this.mainService.getNotebook(notebookId);
         this.mainService.addToNote(notebook);
 
-        return "redirect:/books/%d".formatted(notebookId);
+        return paramHandler.getRedirectUrl("/books/%d".formatted(notebookId));
     }
 
     @GetMapping("/{id}")
@@ -44,22 +44,23 @@ public class NoteController {
 
     @PostMapping("/{id}/update")
     public String update(@PathVariable Long notebookId,
-                         @PathVariable Long id, String title, String content) {
+                         @PathVariable Long id, String title,
+                         String content, ParamHandler paramHandler) {
 
      Note note = this.noteService.getNote(id);
      this.noteService.update(note, title, content);
 
-     return "redirect:/books/%d/notes/%d".formatted(notebookId, id);
+     return paramHandler.getRedirectUrl("/books/%d/notes/%d".formatted(notebookId, id));
 
     }
 
     @PostMapping("/{id}/delete")
     public String delete (@PathVariable Long notebookId,
-                          @PathVariable Long id) {
+                          @PathVariable Long id, ParamHandler paramHandler) {
 
         Note note = this.noteService.getNote(id);
         this.noteService.delete(note);
 
-        return "redirect:/books/%d".formatted(notebookId);
+        return paramHandler.getRedirectUrl("/books/%d".formatted(notebookId));
     }
 }
